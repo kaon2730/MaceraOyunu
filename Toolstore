@@ -1,0 +1,199 @@
+package maceraOyunu;
+
+import java.util.Scanner;
+
+public class Toolstore extends NormalLoc {
+	private Scanner scan = new Scanner(System.in);
+	
+	
+	public Toolstore(Player player) {
+		super(player);
+	}
+	public void onLocation(Player player) {
+		System.out.println("Mağazaya hoşgeldiniz.");
+		System.out.println("Paranız: " + player.getMoney());
+		int select=menu();
+		if(select==1 || select==2) {
+			buy(player, select);
+		} else {
+			SafeHouse safe = new SafeHouse(player);
+			safe.onLocation(player);
+		}
+	}
+	public int menu() {
+		int select=0;
+		System.out.println("Weapons:\n1-Gun\tDamage:2\tMoney:25");
+		System.out.println("2-Sword\tDamage:3\tMoney:35");
+		System.out.println("3-Rifle\tDamage:7\tMoney:45");
+		System.out.println("Armors:\n1-Light\tBlock:1 \tMoney:15");
+		System.out.println("2-Mid\tBlock:3 \tMoney:25");
+		System.out.println("3-Heavy\tBlock:5 \tMoney:40");
+		while(select<1 || select>3) {
+			System.out.println(" '1' for Weapons\n '2' for Armors\n '3' for back to safe house ");
+			select = scan.nextInt();
+		}
+		return select;
+	}
+	public void buy(Player player,int select) {
+		int sec=0;
+		if(select==1) {
+				while(sec<1 || sec>4) {
+				System.out.println("'1' for Gun\n'2' for Sword\n'3' for Rifle\n'4' for safe house");
+				sec = scan.nextInt();
+				}
+				if(sec==1) {
+					if(player.getMoney()>=25 && !isInStr(player.inventory.getWeaponName(), "Gun")) {
+						System.out.println("Gun satın alımı başarı ile gerçekleşti");
+						player.setMoney(player.getMoney()-25);
+						player.inventory.setWeaponDamage(player.inventory.getWeaponDamage() +2);
+						System.out.println("Kalan paranız: " + player.getMoney());
+						System.out.println("Weapon Damage: " + player.inventory.getWeaponDamage());
+						if(player.inventory.getWeaponcount()==0) {
+						player.inventory.setWeaponName("Gun");
+						player.inventory.setWeaponcount(1);
+						} else {
+							player.inventory.setWeaponName(player.inventory.getWeaponName() + " ve " + "Gun");
+						}
+					} else if(isInStr(player.inventory.getWeaponName(), "Gun")) {
+						System.out.println("Bu silaha sahipsiniz.");
+						onLocation(player);
+					} else {
+						System.out.println("Paranız yeterli değil.");
+						onLocation(player);
+					}
+				}
+				if(sec==2) {
+					if(player.getMoney()>=35 && !isInStr(player.inventory.getWeaponName(), "Sword")) {
+						System.out.println("Sword satın alımı başarı ile gerçekleşti");
+						player.setMoney(player.getMoney()-35);
+						player.inventory.setWeaponDamage(player.inventory.getWeaponDamage() +3);
+						System.out.println("Kalan paranız: " + player.getMoney());
+						System.out.println("Weapon Damage: " + player.inventory.getWeaponDamage());
+						if(player.inventory.getWeaponcount()==0) {
+						player.inventory.setWeaponName("Sword");
+						player.inventory.setWeaponcount(1);
+						} else {
+							player.inventory.setWeaponName(player.inventory.getWeaponName() + " ve " + "Sword");
+						}
+					}else if(isInStr(player.inventory.getWeaponName(), "Sword")) {
+						System.out.println("Bu silaha sahipsiniz.");
+						onLocation(player);
+					} else {
+						System.out.println("Paranız yeterli değil.");
+						onLocation(player);
+					}
+				}
+				if(sec==3) {
+					if(player.getMoney()>=45 && !isInStr(player.inventory.getWeaponName(), "Rifle")) {
+						System.out.println("Rifle satın alımı başarı ile gerçekleşti");
+						player.setMoney(player.getMoney()-45);
+						player.inventory.setWeaponDamage(player.inventory.getWeaponDamage() +7);
+						System.out.println("Kalan paranız: " + player.getMoney());
+						System.out.println("Weapon Damage: " + player.inventory.getWeaponDamage());
+						if(player.inventory.getWeaponcount()==0) {
+							player.inventory.setWeaponName("Rifle");
+							player.inventory.setWeaponcount(1);
+							} else {
+								player.inventory.setWeaponName(player.inventory.getWeaponName() + " ve " + "Rifle");
+							}
+						}else if(isInStr(player.inventory.getWeaponName(), "Rifle")) {
+							System.out.println("Bu silaha sahipsiniz.");
+							onLocation(player);
+						} else {
+							System.out.println("Paranız yeterli değil.");
+							onLocation(player);
+						}
+					} 
+				if(sec==4) {
+					SafeHouse safe = new SafeHouse(player);
+					safe.onLocation(player);
+				}
+				
+		} 
+		if(select==2) {
+			while(sec<1 || sec>4) {
+			System.out.println("'1' for Light\n'2' for Mid\n'3' for Heavy\n'4' for safe house");
+			sec = scan.nextInt();
+			}
+			if(sec==1) {
+				if(player.getMoney()>=15 && !isInStr(player.inventory.getArmorName(), "Light")) {
+					System.out.println("Light Armor satın alımı başarı ile gerçekleşti");
+					player.setMoney(player.getMoney()-15);
+					player.inventory.setArmorDefence(player.inventory.getArmorDefence()+1);
+					System.out.println("Kalan paranız: " + player.getMoney());
+					System.out.println("Armor Defence: " + player.inventory.getArmorDefence());
+					if(player.inventory.getArmorcount()==0) {
+					player.inventory.setArmorName("Light");
+					player.inventory.setArmorcount(1);
+					} else {
+						player.inventory.setArmorName( player.inventory.getArmorName() + " ve " + "Light");
+					}
+				} else if(isInStr(player.inventory.getArmorName(), "Light")) {
+					System.out.println("Bu zırha sahipsiniz.");
+					onLocation(player);
+				} else {
+					System.out.println("Paranız yeterli değil.");
+					onLocation(player);
+				}
+			}
+			if(sec==2) {
+				if(player.getMoney()>=25 && !isInStr(player.inventory.getArmorName(), "Mid")) {
+					System.out.println("Mid Armor satın alımı başarı ile gerçekleşti");
+					player.setMoney(player.getMoney()-25);
+					player.inventory.setArmorDefence(player.inventory.getArmorDefence()+3);
+					System.out.println("Kalan paranız: " + player.getMoney());
+					System.out.println("Armor Defence: " + player.inventory.getArmorDefence());
+					if(player.inventory.getArmorcount()==0) {
+					player.inventory.setArmorName("Mid");
+					player.inventory.setArmorcount(1);
+					} else {
+						player.inventory.setArmorName( player.inventory.getArmorName() + " ve " + "Mid");
+					}
+				} else if(isInStr(player.inventory.getArmorName(), "Mid")) {
+					System.out.println("Bu zırha sahipsiniz.");
+					onLocation(player);
+				} else {
+					System.out.println("Paranız yeterli değil.");
+					onLocation(player);
+				}
+			}
+			if(sec==3) {
+				if(player.getMoney()>=40 && !isInStr(player.inventory.getArmorName(), "Heavy")) {
+					System.out.println("Heavy Armor satın alımı başarı ile gerçekleşti");
+					player.setMoney(player.getMoney()-40);
+					player.inventory.setArmorDefence(player.inventory.getArmorDefence()+5);
+					System.out.println("Kalan paranız: " + player.getMoney());
+					System.out.println("Armor Defence: " + player.inventory.getArmorDefence());
+					if(player.inventory.getArmorcount()==0) {
+					player.inventory.setArmorName("Heavy");
+					player.inventory.setArmorcount(1);
+					} else {
+						player.inventory.setArmorName( player.inventory.getArmorName() + " ve " + "Heavy");
+					}
+				} else if(isInStr(player.inventory.getArmorName(), "Heavy")) {
+					System.out.println("Bu zırha sahipsiniz.");
+					onLocation(player);
+				} else {
+					System.out.println("Paranız yeterli değil.");
+					onLocation(player);
+				}
+				}
+			if(sec==4) {
+				SafeHouse safe = new SafeHouse(player);
+				safe.onLocation(player);
+			}
+	} 
+	}
+	public static boolean isInStr(String a, String b) {
+		if(a==null) {
+			return false;
+		} else {
+		for(int i=0; i+b.length()<= a.length() ; i++) {
+			if(a.substring(i, i+b.length()).equals(b)) {
+				return true;
+			}
+		}
+		}
+		return false;
+	}
+}
