@@ -1,0 +1,25 @@
+package maceraOyunu;
+
+import java.util.Scanner;
+
+public class Game {
+	private Scanner giris = new Scanner(System.in);
+	Player player;
+	
+	public void Start() {
+		System.out.println("Macera oyununa hosgeldiniz");
+		System.out.println("Lütfen bir isim giriniz");
+		String playerName = giris.nextLine();
+		Player player = new Player(playerName);
+		player.selectChar();
+		Inventory inventory = new Inventory();
+		player.inventory= inventory;
+		while(player.getHealt()>0 && (!player.inventory.isFirewood()||!player.inventory.isWater()||!player.inventory.isFood())) {
+			player.selectLocation();
+		}
+		if(player.inventory.isFirewood()&& player.inventory.isFood()&& player.inventory.isWater()) {
+			System.out.println("Tebrikler oyunu kazandınız");
+		}
+	}
+	
+}
