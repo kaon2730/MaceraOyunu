@@ -1,0 +1,125 @@
+package maceraOyunu;
+
+import java.util.Random;
+
+public class Coal extends BattleLoc {
+	private Random rnd = new Random();
+	public Coal(Player player, String name, Obstacle obstacle) {
+		super(player, name, obstacle);
+	}
+	
+	public void prize(Player player) {
+
+		int possibilty = rnd.nextInt(100);
+		if(possibilty<45) {
+			System.out.println("Hiçbir ödül kazanamadınız");
+		} else if(possibilty<60) {
+			possibilty = rnd.nextInt();
+			if(possibilty<20) {
+				if(!Toolstore.isInStr(player.inventory.getWeaponName(), "Rifle")) {
+					System.out.println("Rifle kazandınız");
+					player.inventory.setWeaponDamage(player.inventory.getWeaponDamage() +7);
+					System.out.println("Weapon Damage: " + player.inventory.getWeaponDamage());
+					if(player.inventory.getWeaponcount()==0) {
+						player.inventory.setWeaponName("Rifle");
+						player.inventory.setWeaponcount(1);
+						} else {
+							player.inventory.setWeaponName(player.inventory.getWeaponName() + " ve " + "Rifle");
+						}
+					}else {
+						System.out.println("Yılan/lardan Rifle kazandınız.Ancak bu silaha sahipsiniz zaten. :(");
+					}
+			} else if(possibilty<50) {
+				if(!Toolstore.isInStr(player.inventory.getWeaponName(), "Sword")) {
+					System.out.println("Sword kazandınız");
+					player.inventory.setWeaponDamage(player.inventory.getWeaponDamage() +3);
+					System.out.println("Weapon Damage: " + player.inventory.getWeaponDamage());
+					if(player.inventory.getWeaponcount()==0) {
+						player.inventory.setWeaponName("Sword");
+						player.inventory.setWeaponcount(1);
+						} else {
+							player.inventory.setWeaponName(player.inventory.getWeaponName() + " ve " + "Sword");
+						}
+					}else {
+						System.out.println("Yılan/lardan Sword kazandınız.Ancak bu silaha sahipsiniz zaten. :(");
+					}
+			} else {
+				if(!Toolstore.isInStr(player.inventory.getWeaponName(), "Gun")) {
+					System.out.println("Gun kazandınız");
+					player.inventory.setWeaponDamage(player.inventory.getWeaponDamage() +2);
+					System.out.println("Weapon Damage: " + player.inventory.getWeaponDamage());
+					if(player.inventory.getWeaponcount()==0) {
+						player.inventory.setWeaponName("Gun");
+						player.inventory.setWeaponcount(1);
+						} else {
+							player.inventory.setWeaponName(player.inventory.getWeaponName() + " ve " + "Gun");
+						}
+					}else {
+						System.out.println("Yılan/lardan Gun kazandınız.Ancak bu silaha sahipsiniz zaten. :(");
+					}
+			}
+		} else if(possibilty<75) {
+			possibilty = rnd.nextInt(100);
+			if(possibilty<20) {
+				if(!Toolstore.isInStr(player.inventory.getArmorName(), "Heavy")) {
+					System.out.println("Heavy Armor kazandınız.");
+					player.inventory.setArmorDefence(player.inventory.getArmorDefence()+5);
+					System.out.println("Armor Defence: " + player.inventory.getArmorDefence());
+					if(player.inventory.getArmorcount()==0) {
+					player.inventory.setArmorName("Heavy");
+					player.inventory.setArmorcount(1);
+					} else {
+						player.inventory.setArmorName( player.inventory.getArmorName() + " ve " + "Heavy");
+					}
+				} else {
+					System.out.println("Heavy Armor zırh kazandınız. Ancak bu zırha sahipsiniz zaten. :(");
+				}
+			} else if(possibilty<50) {
+				if(!Toolstore.isInStr(player.inventory.getArmorName(), "Mid")) {
+					System.out.println("Mid Armor kazandınız.");
+					player.inventory.setArmorDefence(player.inventory.getArmorDefence()+3);
+					System.out.println("Armor Defence: " + player.inventory.getArmorDefence());
+					if(player.inventory.getArmorcount()==0) {
+					player.inventory.setArmorName("Mid");
+					player.inventory.setArmorcount(1);
+					} else {
+						player.inventory.setArmorName( player.inventory.getArmorName() + " ve " + "Mid");
+					}
+				} else {
+					System.out.println("Mid Armor zırh kazandınız. Ancak bu zırha sahipsiniz zaten. :(");
+				}
+			} else {
+				if(!Toolstore.isInStr(player.inventory.getArmorName(), "Light")) {
+					System.out.println("Light Armor kazandınız.");
+					player.inventory.setArmorDefence(player.inventory.getArmorDefence()+1);
+					System.out.println("Armor Defence: " + player.inventory.getArmorDefence());
+					if(player.inventory.getArmorcount()==0) {
+					player.inventory.setArmorName("Light");
+					player.inventory.setArmorcount(1);
+					} else {
+						player.inventory.setArmorName( player.inventory.getArmorName() + " ve " + "Light");
+					}
+				} else {
+					System.out.println("Light Armor zırh kazandınız. Ancak bu zırha sahipsiniz zaten. :(");
+				}
+			}
+		}
+		else {
+			possibilty = rnd.nextInt(100);
+			if(possibilty<20) {
+				System.out.println("10 para kazandınız.");
+				player.setMoney(player.getMoney()+10);
+				System.out.println("Paranız: " + player.getMoney());
+			} else if(possibilty<50) {
+				System.out.println("5 para kazandınız.");
+				player.setMoney(player.getMoney()+5);
+				System.out.println("Paranız: " + player.getMoney());
+			} else {
+				System.out.println("1 para kazandınız.");
+				player.setMoney(player.getMoney()+1);
+				System.out.println("Paranız: " + player.getMoney());
+			}
+		}
+		
+}
+}
