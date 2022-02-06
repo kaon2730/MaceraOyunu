@@ -1,0 +1,16 @@
+package maceraOyunu;
+
+import java.util.Random;
+
+public class Snake extends Obstacle {
+	private Random random= new Random();
+	public Snake() {
+		super("Yılan", 3, 12,0);
+	
+	}
+	@Override
+	public int obstacleNumber() {
+		int obstacleNumber= random.nextInt(5);
+		return obstacleNumber+1;
+	}
+}
