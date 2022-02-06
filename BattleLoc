@@ -1,14 +1,177 @@
 package maceraOyunu;
 
-public class Cave extends BattleLoc {
-	public Cave(Player player, String name, Obstacle obstacle) {
-		super(player, name, obstacle);
+import java.util.Random;
+import java.util.Scanner;
+
+public abstract class BattleLoc extends Location{
+	private Scanner scan = new Scanner(System.in);
+	private Random rnd = new Random();
+	private Obstacle obstacle;
+	public BattleLoc(Player player, String name, Obstacle obstacle) {
+		super(player);
+		this.setName(name);
+		this.obstacle=obstacle;
 	}
 	
-	public void property(Player player) {
-		player.inventory.setFood(true);
-		System.out.println("Food eşyasını kazandınız");
+	public void onBattleLocation(Player player, Obstacle obstacle) {
+		int select=0;
+		int obstaclecount = obstacle.obstacleNumber();
+		System.out.println( getClass().getSimpleName() + " hoşgeldiniz. Burada " + obstaclecount + " adet " + this.obstacle.getName() + " bulunmaktadır." );
+		System.out.println("Tüm " + this.obstacle.getName() + "leri/ları öldürmeyi başarırsanız özel ödülü kazanacaksınız.");
+		while(select<1 || select>2) {
+			System.out.println("Savaşmak için 1'e , Menüye dönmek için 2 ye basınız.");
+			select = scan.nextInt();
+				if(select==1) {
+					combat(player, obstacle, obstaclecount);
+				}
+				if(select==2){
+					player.selectLocation();
+				}
+		}
 	}
-	
+	public void combat(Player player,Obstacle obstacle, int obstacleNumber) {
+		String select = "a";
+		obstacle.setObstacleMoney(obstacle.getObstacleMoney()*obstacleNumber);
+		int countObstacle=1;
+		int obstaclehealt= obstacle.getObstacleHealt();
+		int playerarmorcount = player.inventory.getArmorcount();
+		int selectWho = rnd.nextInt(2);
+		if(selectWho<1) {
+			System.out.println("İlk saldırıyı " + player.getCharName() + " yapacak");
+		while(obstacleNumber>0) {
+			obstacle.setObstacleHealt(obstaclehealt);
+			while(player.getHealt()>0 && obstacle.getObstacleHealt()>0) {
+				if(obstacle.getName().equalsIgnoreCase("yılan")) {
+					obstacle.setObstacleDamage(rnd.nextInt(4)+3);
+				}
+				select ="a";
+				while(!select.equalsIgnoreCase("V") && !select.equalsIgnoreCase("K")) {
+				System.out.println("Vurmak için 'V' ye Kaçmak için 'K' ya basınız");
+				select =scan.next();
 		
+				if(select.equalsIgnoreCase("K")) {
+					obstacle.setObstacleHealt(0);
+					obstacleNumber=-1;
+				}
+				if(select.equalsIgnoreCase("V")) {
+					System.out.println(player.getCharName() + ", " + obstacle.getName() + " canavara " + (player.getDamage() + player.inventory.getWeaponDamage()) + " hasar vurdu");
+					obstacle.setObstacleHealt(obstacle.getObstacleHealt()-(player.getDamage()+player.inventory.getWeaponDamage()));
+					if(obstacle.getObstacleHealt()<=0) {
+						System.out.println(obstacle.getName() + " sağlığı: 0" );
+						System.out.println(countObstacle + ". " + obstacle.getName() + " canavarını öldürdünüz.");
+						countObstacle++;
+						obstacleNumber--;
+					} else {
+					System.out.println(obstacle.getName() + " sağlığı: " + obstacle.getObstacleHealt());
+					}
+					if(obstacle.getObstacleHealt()>0) {
+						System.out.println(obstacle.getName() + ", " + player.getCharName()+ "'a " + obstacle.getObstacleDamage() + " hasar vurdu." );
+						if(obstacle.getObstacleDamage() > player.inventory.getArmorDefence()) {
+						if(!(playerarmorcount==0)) {
+						System.out.println(player.getCharName()+ ", " + player.inventory.getArmorName()+ " zırhı/zırhları sayesinde " + player.inventory.getArmorDefence() + " hasar savurdu." );
+						}
+						player.setHealt(player.getHealt()-(obstacle.getObstacleDamage())+(player.inventory.getArmorDefence()));
+						if(player.getHealt()<0) {
+							player.setHealt(0);
+						}
+						System.out.println(player.getCharName()+ " sağlığı: " + player.getHealt());
+					} else {
+						System.out.println(player.getCharName() + ", " +player.inventory.getArmorName() + " zırhı/zırhları sayesinde saldırıyı savurdu");
+						System.out.println(player.getCharName()+ " sağlığı: " + player.getHealt());
+					}
+					if(player.getHealt()<=0) {
+						System.out.println("Oyunu kaybettiniz");
+						obstacleNumber=-1;
+					}
+					}
+				}
+			}
+			}
+		}
+		}
+		else {
+			System.out.println("İlk saldırıyı " + obstacle.getName() + " yapacak");
+			while(obstacleNumber>0) {
+				obstacle.setObstacleHealt(obstaclehealt);
+				while(player.getHealt()>0 && obstacle.getObstacleHealt()>0) {
+					if(obstacle.getName().equalsIgnoreCase("yılan")) {
+						obstacle.setObstacleDamage(rnd.nextInt(4)+3);
+					}
+						System.out.println(obstacle.getName() + ", " + player.getCharName()+ "'a/e " + obstacle.getObstacleDamage() + " hasar vurdu." );
+						if(obstacle.getObstacleDamage() > player.inventory.getArmorDefence()) {
+							if(!(playerarmorcount==0)) {
+							System.out.println(player.getCharName()+ ", " + player.inventory.getArmorName()+ " zırhı/zırhları sayesinde " + player.inventory.getArmorDefence() + " hasar savurdu." );
+							}
+							player.setHealt(player.getHealt()-(obstacle.getObstacleDamage())+(player.inventory.getArmorDefence()));
+							if(player.getHealt()<0) {
+								player.setHealt(0);
+							}
+							System.out.println(player.getCharName()+ " sağlığı: " + player.getHealt());
+						} else {
+							System.out.println(player.getCharName() + ", " +player.inventory.getArmorName() + " zırhı/zırhları sayesinde saldırıyı savurdu");
+							System.out.println(player.getCharName()+ " sağlığı: " + player.getHealt());
+						}
+						if(player.getHealt()<=0) {
+							System.out.println("Oyunu kaybettiniz");
+							obstacleNumber=-1;
+						} else {
+							select ="a";
+							while(!select.equalsIgnoreCase("V") && !select.equalsIgnoreCase("K")) {
+							System.out.println("Vurmak için 'V' ye Kaçmak için 'K' ya basınız");
+							select =scan.next();
+								if(select.equalsIgnoreCase("K")) {
+									obstacle.setObstacleHealt(0);
+									obstacleNumber=-1;
+								}
+								if(select.equalsIgnoreCase("V")) {
+								System.out.println(player.getCharName() + ", " + obstacle.getName() + " canavarına " + (player.getDamage() + player.inventory.getWeaponDamage()) + " hasar vurdu");
+								obstacle.setObstacleHealt(obstacle.getObstacleHealt()-(player.getDamage()+player.inventory.getWeaponDamage()));
+								if(obstacle.getObstacleHealt()<=0) {
+								System.out.println(obstacle.getName() + " sağlığı: 0" );
+								System.out.println(countObstacle + ". " + obstacle.getName() + " canavarını öldürdünüz.");
+								countObstacle++;
+								obstacleNumber--;
+								} else {
+								System.out.println(obstacle.getName() + " sağlığı: " + obstacle.getObstacleHealt());
+								}
+						}
+				}
+				}
+			}
+		}
+		}
+		if(obstacleNumber==-1) {
+			
+		} else {
+			player.setMoney(player.getMoney()+ obstacle.getObstacleMoney());
+			System.out.println(obstacle.getObstacleMoney() + " para kazandınız");
+		if(obstacle.getName().equalsIgnoreCase("Vampir")) {
+			Forest forest = new Forest(player, "forest", obstacle);
+			forest.property(player);
+		}
+		if(obstacle.getName().equalsIgnoreCase("zombi")) {
+			Cave cave = new Cave(player,"cave",obstacle);
+			cave.property(player);
+		}
+		if(obstacle.getName().equalsIgnoreCase("ayı")) {
+			River river = new River(player,"river",obstacle);
+			river.property(player);
+		}
+		if(obstacle.getName().equalsIgnoreCase("yılan")) {
+			Coal coal = new Coal(player,"coal",obstacle);
+			coal.prize(player);
+		}
+		System.out.println("Sağlığınız: " + player.getHealt());
+		System.out.println("Paranız: " + player.getMoney());
+		}
 	}
+	public Obstacle getObstacle() {
+		return obstacle;
+	}
+	public void setObstacle(Obstacle obstacle) {
+		this.obstacle = obstacle;
+	}
+	
+	
+}
+
