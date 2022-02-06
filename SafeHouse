@@ -1,0 +1,25 @@
+package maceraOyunu;
+
+public class SafeHouse extends NormalLoc {
+	
+	public SafeHouse(Player player) {
+		super(player);
+	
+	}
+
+	public void onLocation(Player player) {
+		System.out.println("Güvenli evdesiniz");
+		System.out.println("Canınız yenilendi");
+		if(player.getCharName().equals("Samurai")) {
+			player.setHealt(new Samurai().getHealt());
+		}
+		if(player.getCharName().equals("Archer")) {
+			player.setHealt(new Archer().getHealt());
+		}
+		if(player.getCharName().equals("Knight")) {
+			player.setHealt(new Knight().getHealt());
+		}
+		System.out.println("Sağlığınız: " + player.getHealt());
+		System.out.println("Paranız: " + player.getMoney());
+}
+}
