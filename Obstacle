@@ -1,0 +1,57 @@
+package maceraOyunu;
+
+import java.util.Random;
+
+public class Obstacle {
+	private Random rnd = new Random();
+	private int obstacleDamage;
+	private int obstacleHealt;
+	private int obstacleMoney;
+	private String name;
+	
+	public Obstacle(String name,int obstacleDamage,
+			int obstacleHealt, int obstacleMoney) {
+		this.name=name;
+		this.obstacleDamage=obstacleDamage;
+		this.obstacleHealt=obstacleHealt;
+		this.obstacleMoney=obstacleMoney;
+	}
+
+	public int obstacleNumber() {
+		int obstacleNumber= rnd.nextInt(3);
+		return obstacleNumber+1;
+	}
+
+	public int getObstacleMoney() {
+		return obstacleMoney;
+	}
+
+	public void setObstacleMoney(int obstacleMoney) {
+		this.obstacleMoney = obstacleMoney;
+	}
+
+	public int getObstacleHealt() {
+		return obstacleHealt;
+	}
+
+	public void setObstacleHealt(int obstacleHealt) {
+		this.obstacleHealt = obstacleHealt;
+	}
+
+	public int getObstacleDamage() {
+		return obstacleDamage;
+	}
+
+	public void setObstacleDamage(int obstacleDamage) {
+		this.obstacleDamage = obstacleDamage;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+}
